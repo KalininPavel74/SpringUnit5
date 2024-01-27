@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+<body>
+<style>
+span.validationError {
+color: red;
+}
+</style>
+<h1>Tasks</h1>
+<h2>Add a task</h2>
+<form action="/tasks" method="post" th:object="${task}">
+    <label for="name">Name: </label>
+    <input type="text" th:field="*{name}"/>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('name')}"
+                      th:errors="*{name}">Name Error</span>
+    <br/>
+    <label for="taskStatus">Status: </label>
+    <div><input type="radio" name="taskStatus" value="NOT_STARTED" checked="checked" />Not started</div>
+    <div><input type="radio" name="taskStatus" value="IN_PROGRESS" />In progress</div>
+    <div><input type="radio" name="taskStatus" value="COMPLETE" />Complete</div>
+    <br/><button type="submit">Add task</button>
+    <br/><div><span th:text="${db_save_error}"></span></div>
+</form>
+<h2>View tasks</h2>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Date time</th>
+    </tr>
+    <tr th:each="task: ${tasks}">
+        <td th:text="${task.id}"></td>
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.taskStatus}"></td>
+        <td th:text="${task.createdAt}"></td>
+        <td><a th:href="@{http://localhost:8080/tasks/update/{id}(id=${task.id})}">Update</a></td>
+        <td><a th:href="@{http://localhost:8080/tasks/delete/{id}(id=${task.id})}">Delete</a></td>
+    </tr>
+</table>
+</body>
+</html>

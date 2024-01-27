@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="UTF-8">
+<title>Create user</title>
+</head>
+<body>
+<style>
+span.validationError {
+color: red;
+}
+</style>
+<form th:action="@{/tasks/task_update}" th:object="${task}" method="post">
+    <label for="id">ID</label>
+    <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
+    <br/>
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+    <span class="validationError"
+          th:if="${#fields.hasErrors('name')}"
+          th:errors="*{name}">Name Error</span>
+    <br/>
+    <label for="taskStatus">Task status</label>
+    <!-- <input type="text" th:field="*{taskStatus}" id="taskStatus" placeholder="Task status"> -->
+    <input type="text" list="listStatuses" id="taskStatus" name="taskStatus" placeholder="Task status">
+    <datalist id="listStatuses">
+        <option value="NOT_STARTED" label="Not started">
+        <option value="IN_PROGRESS" label="In progress">
+        <option value="COMPLETE"    label="Complete">
+    </datalist>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('taskStatus')}"
+          th:errors="*{taskStatus}">Task status Error</span>
+
+<!--
+    <div>
+        <select th:field="*{endereco}">
+            <option th:each="e: ${endereco}"
+                    th:value="${e.enderecoId}"
+                    th:text="${e.logradouro} + ', ' + ${e.numero}"/>
+        </select>
+    </div>
+-->
+    <br/>
+    <input type="submit" value="Update task">
+</form>
+<br/><div><span th:text="${db_save_error}"></span></div>
+</body>
+</html>
